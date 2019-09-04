@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import {
   requireNativeComponent,
   UIManager,
   findNodeHandle,
-  ViewPropTypes,
-} from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+  ViewPropTypes
+} from "react-native";
+import {string, func, arrayOf} from "prop-types";
 
-import { createErrorFromErrorData } from './utils';
+import {createErrorFromErrorData} from "./utils";
 
 class PublisherBanner extends Component {
-
   constructor() {
     super();
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleAppEvent = this.handleAppEvent.bind(this);
     this.handleAdFailedToLoad = this.handleAdFailedToLoad.bind(this);
     this.state = {
-      style: {},
+      style: {}
     };
   }
 
@@ -28,29 +27,31 @@ class PublisherBanner extends Component {
   loadBanner() {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this._bannerView),
-      UIManager.RNDFPBannerView.Commands.loadBanner,
-      null,
+      UIManager.getViewManagerConfig("RNDFPBannerView").Commands.loadBanner,
+      null
     );
   }
 
   handleSizeChange(event) {
-    const { height, width } = event.nativeEvent;
-    this.setState({ style: { width, height } });
+    const {height, width} = event.nativeEvent;
+    this.setState({style: {width, height}});
     if (this.props.onSizeChange) {
-      this.props.onSizeChange({ width, height });
+      this.props.onSizeChange({width, height});
     }
   }
 
   handleAppEvent(event) {
     if (this.props.onAppEvent) {
-      const { name, info } = event.nativeEvent;
-      this.props.onAppEvent({ name, info });
+      const {name, info} = event.nativeEvent;
+      this.props.onAppEvent({name, info});
     }
   }
 
   handleAdFailedToLoad(event) {
     if (this.props.onAdFailedToLoad) {
-      this.props.onAdFailedToLoad(createErrorFromErrorData(event.nativeEvent.error));
+      this.props.onAdFailedToLoad(
+        createErrorFromErrorData(event.nativeEvent.error)
+      );
     }
   }
 
@@ -68,7 +69,7 @@ class PublisherBanner extends Component {
   }
 }
 
-PublisherBanner.simulatorId = 'SIMULATOR';
+PublisherBanner.simulatorId = "SIMULATOR";
 
 PublisherBanner.propTypes = {
   ...ViewPropTypes,
@@ -113,9 +114,12 @@ PublisherBanner.propTypes = {
   onAdOpened: func,
   onAdClosed: func,
   onAdLeftApplication: func,
-  onAppEvent: func,
+  onAppEvent: func
 };
 
-const RNDFPBannerView = requireNativeComponent('RNDFPBannerView', PublisherBanner);
+const RNDFPBannerView = requireNativeComponent(
+  "RNDFPBannerView",
+  PublisherBanner
+);
 
 export default PublisherBanner;

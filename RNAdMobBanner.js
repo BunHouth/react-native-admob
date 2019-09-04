@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import {
   requireNativeComponent,
   UIManager,
   findNodeHandle,
-  ViewPropTypes,
-} from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+  ViewPropTypes
+} from "react-native";
+import {string, func, arrayOf} from "prop-types";
 
-import { createErrorFromErrorData } from './utils';
+import {createErrorFromErrorData} from "./utils";
 
 class AdMobBanner extends Component {
-
   constructor() {
     super();
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleAdFailedToLoad = this.handleAdFailedToLoad.bind(this);
     this.state = {
-      style: {},
+      style: {}
     };
   }
 
@@ -27,22 +26,24 @@ class AdMobBanner extends Component {
   loadBanner() {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this._bannerView),
-      UIManager.RNGADBannerView.Commands.loadBanner,
-      null,
+      UIManager.getViewManagerConfig("RNGADBannerView").Commands.loadBanner,
+      null
     );
   }
 
   handleSizeChange(event) {
-    const { height, width } = event.nativeEvent;
-    this.setState({ style: { width, height } });
+    const {height, width} = event.nativeEvent;
+    this.setState({style: {width, height}});
     if (this.props.onSizeChange) {
-      this.props.onSizeChange({ width, height });
+      this.props.onSizeChange({width, height});
     }
   }
 
   handleAdFailedToLoad(event) {
     if (this.props.onAdFailedToLoad) {
-      this.props.onAdFailedToLoad(createErrorFromErrorData(event.nativeEvent.error));
+      this.props.onAdFailedToLoad(
+        createErrorFromErrorData(event.nativeEvent.error)
+      );
     }
   }
 
@@ -59,7 +60,7 @@ class AdMobBanner extends Component {
   }
 }
 
-AdMobBanner.simulatorId = 'SIMULATOR';
+AdMobBanner.simulatorId = "SIMULATOR";
 
 AdMobBanner.propTypes = {
   ...ViewPropTypes,
@@ -98,9 +99,9 @@ AdMobBanner.propTypes = {
   onAdFailedToLoad: func,
   onAdOpened: func,
   onAdClosed: func,
-  onAdLeftApplication: func,
+  onAdLeftApplication: func
 };
 
-const RNGADBannerView = requireNativeComponent('RNGADBannerView', AdMobBanner);
+const RNGADBannerView = requireNativeComponent("RNGADBannerView", AdMobBanner);
 
 export default AdMobBanner;
